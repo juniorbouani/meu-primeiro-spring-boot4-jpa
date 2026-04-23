@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table (name = "tb_user")
+@Table (name = "user")
 public class User implements Serializable {
 
 
