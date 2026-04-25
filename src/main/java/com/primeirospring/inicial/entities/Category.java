@@ -3,7 +3,9 @@ package com.primeirospring.inicial.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
@@ -16,6 +18,9 @@ public class Category implements Serializable {
 
     private Long Id;
     private String name;
+
+    @Transient
+    private Set<Product> products = new HashSet<>();
 
     public Category() {
 
@@ -38,6 +43,10 @@ public class Category implements Serializable {
         return name;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -53,5 +62,4 @@ public class Category implements Serializable {
     public int hashCode() {
         return Objects.hashCode(Id);
     }
-
 }
