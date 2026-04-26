@@ -2,6 +2,7 @@ package com.primeirospring.inicial.services;
 
 import com.primeirospring.inicial.entities.User;
 import com.primeirospring.inicial.repositories.UserRepository;
+import com.primeirospring.inicial.services.exceptions.ResourceNotFoundExcepiton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundExcepiton(id));
 
     }
 
