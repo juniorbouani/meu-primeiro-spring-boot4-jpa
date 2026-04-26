@@ -2,8 +2,11 @@ package com.primeirospring.inicial.services;
 
 import com.primeirospring.inicial.entities.User;
 import com.primeirospring.inicial.repositories.UserRepository;
+import com.primeirospring.inicial.services.exceptions.DatabaseException;
 import com.primeirospring.inicial.services.exceptions.ResourceNotFoundExcepiton;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +33,18 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundExcepiton(id);
+        }
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundExcepiton(id);
+        }  catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 
     public User update(Long id, User obj) {
@@ -45,6 +59,5 @@ public class UserService {
         entity.setFone(obj.getFone());
 
     }
-
 
 }
